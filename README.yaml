@@ -1,0 +1,161 @@
+---
+#
+# This is the canonical configuration for the `README.md`
+# Run `make readme` to rebuild the `README.md`
+#
+
+# Name of this project
+name: tf-mod-aws-eks-workers
+
+# Canonical GitHub repo
+github_repo: https://github.com/Callumccr/tf-mod-aws-eks-workers
+
+# Short description of this project
+description: |-
+  A Terraform module to provision & add EKS workers to a cluster
+
+# How to use this project
+usage: |-
+  The below values shown in the usage of this module are purely representative, please replace desired values as required.
+
+  ```hcl
+    module "tf-mod-aws-eks-workers" {
+      source                = "git::https://github.com/Callumccr/tf-mod-aws-eks-workers.git?ref=master
+      namespace                 = var.namespace
+      stage                     = var.stage
+      name                      = var.name
+      attributes                = var.attributes
+      tags                      = var.tags
+      vpc_id                    = var.vpc_id
+      subnet_ids                = var.subnet_ids
+      instance_types            = var.instance_types
+      desired_size              = var.desired_size
+      min_size                  = var.min_size
+      max_size                  = var.max_size
+      cluster_name              = var.cluster_name
+      kubernetes_version        = var.kubernetes_version
+    }
+  ```
+include:
+  - "docs/terraform.md"
+
+
+# Introduction to the project
+introduction: |-
+  The module provisions the following resources:
+    - An EKS Node Group
+    - A Supporting IAM Role with all the EKS workers policies required
+    - (Optional) - A default security group to associate with the workers and the EKS cluster
+    - (Optional) - Associates the required permissions and tags for the k8s cluster-autoscaler
+
+examples: |-
+  ### Advanced Example 1
+
+  The following example generates consistent names and tags for resources, a network stack, and a EKS cluster with workers.
+
+  ```hcl
+    module "tf-mod-label" {
+      source     = "git::https://github.com/Callumccr/tf-mod-label.git?ref=master
+      namespace  = var.namespace
+      name       = var.name
+      stage      = var.stage
+      delimiter  = var.delimiter
+      attributes = compact(concat(var.attributes, list("cluster")))
+      tags       = var.tags
+    }
+
+    locals {
+      tags = merge(module.label.tags, map("kubernetes.io/cluster/${module.label.id}", "shared"))
+    }
+
+    module "tf-mod-aws-vpc" {
+      source     = "git::https://github.com/Callumccr/tf-mod-aws-vpc.git?ref=master
+      namespace  = var.namespace
+      stage      = var.stage
+      name       = var.name
+      attributes = var.attributes
+      cidr_block = var.vpc_cidr_block
+      tags       = local.tags
+    }
+
+    module "tf-mod-aws-subnets" {
+      source               = "git::https://github.com/Callumccr/tf-mod-aws-subnets.git?ref=master
+      availability_zones   = var.availability_zones
+      namespace            = var.namespace
+      stage                = var.stage
+      name                 = var.name
+      attributes           = var.attributes
+      vpc_id               = module.vpc.vpc_id
+      igw_id               = module.vpc.igw_id
+      cidr_block           = module.vpc.vpc_cidr_block
+      nat_gateway_enabled  = false
+      nat_instance_enabled = false
+      tags                 = local.tags
+    }
+
+    module "eks_cluster" {
+      source                = "git::https://github.com/Callumccr/tf-mod-aws-eks-cluster.git?ref=master
+      namespace             = var.namespace
+      stage                 = var.stage
+      name                  = var.name
+      attributes            = var.attributes
+      tags                  = var.tags
+      region                = var.region
+      vpc_id                = module.vpc.vpc_id
+      subnet_ids            = module.subnets.public_subnet_ids
+      kubernetes_version    = var.kubernetes_version
+      kubeconfig_path       = var.kubeconfig_path
+      oidc_provider_enabled = var.oidc_provider_enabled
+
+      workers_role_arns          = [module.eks_node_group.eks_node_group_role_arn]
+      workers_security_group_ids = []
+    }
+
+    module "tf-mod-aws-eks-workers" {
+      source                = "git::https://github.com/Callumccr/tf-mod-aws-eks-workers.git?ref=master
+      namespace                 = var.namespace
+      stage                     = var.stage
+      name                      = var.name
+      attributes                = var.attributes
+      tags                      = var.tags
+      vpc_id                    = module.vpc.vpc_id
+      subnet_ids                = module.subnets.public_subnet_ids
+      instance_types            = var.instance_types
+      desired_size              = var.desired_size
+      min_size                  = var.min_size
+      max_size                  = var.max_size
+      cluster_name              = module.eks_cluster.eks_cluster_id
+      kubernetes_version        = var.kubernetes_version
+    }
+  ```
+
+# Related projects
+related:
+  - name:
+    description:
+    url:
+
+# Project feferences
+references:
+  - name: terraform-aws-modules/terraform-aws-eks
+    description: A Terraform module to create an Elastic Kubernetes (EKS) cluster and associated worker instances on AWS.
+    url: https://github.com/terraform-aws-modules/terraform-aws-eks
+  - name: cloudposse/terraform-aws-eks-node-group
+    description: Terraform module to provision an EKS Node Group.
+    url: https://github.com/cloudposse/terraform-aws-eks-node-group
+
+# Contributor information
+contributors:
+  - name: "Callum Robertson"
+    github: "callumccr"
+    avatar: https://media-exp1.licdn.com/dms/image/C5603AQHb_3oZMZA5YA/profile-displayphoto-shrink_200_200/0?e=1588809600&v=beta&t=5QQQAlHrm1od5fQNZwdjOtbZWvsGcgNBqFRhZWgnPx4
+    homepage: https://www.linkedin.com/in/callum-robertson-1a55b6110/
+
+# Jira information
+jira:
+  - project:
+    project_url:
+    epic: 
+    epic_url:
+    user_story: 
+    user_story_url:
