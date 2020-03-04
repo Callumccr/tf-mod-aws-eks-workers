@@ -144,7 +144,7 @@ The following example generates consistent names and tags for resources, a netwo
     tags                 = local.tags
   }
 
-  module "eks_cluster" {
+  module "tf-mod-aws-eks-cluster" {
     source                = "git::https://github.com/Callumccr/tf-mod-aws-eks-cluster.git?ref=master
     namespace             = var.namespace
     stage                 = var.stage
@@ -185,7 +185,7 @@ The following example generates consistent names and tags for resources, a netwo
 
 | Name | Version |
 |------|---------|
-| aws | ~> 2.0 |
+| aws | ~> 3.0 |
 
 ## Inputs
 
