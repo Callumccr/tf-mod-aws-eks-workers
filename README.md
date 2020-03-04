@@ -78,7 +78,7 @@ The below values shown in the usage of this module are purely representative, pl
 
 ```hcl
   module "tf-mod-aws-eks-workers" {
-    source                = "git::https://github.com/Callumccr/tf-mod-aws-eks-workers.git?ref=master
+    source                    = "git::https://github.com/Callumccr/tf-mod-aws-eks-workers.git?ref=master"
     namespace                 = var.namespace
     stage                     = var.stage
     name                      = var.name
@@ -106,7 +106,7 @@ The following example generates consistent names and tags for resources, a netwo
 
 ```hcl
   module "tf-mod-label" {
-    source     = "git::https://github.com/Callumccr/tf-mod-label.git?ref=master
+    source     = "git::https://github.com/Callumccr/tf-mod-label.git?ref=master"
     namespace  = var.namespace
     name       = var.name
     stage      = var.stage
@@ -120,7 +120,7 @@ The following example generates consistent names and tags for resources, a netwo
   }
 
   module "tf-mod-aws-vpc" {
-    source     = "git::https://github.com/Callumccr/tf-mod-aws-vpc.git?ref=master
+    source     = "git::https://github.com/Callumccr/tf-mod-aws-vpc.git?ref=master"
     namespace  = var.namespace
     stage      = var.stage
     name       = var.name
@@ -130,7 +130,7 @@ The following example generates consistent names and tags for resources, a netwo
   }
 
   module "tf-mod-aws-subnets" {
-    source               = "git::https://github.com/Callumccr/tf-mod-aws-subnets.git?ref=master
+    source               = "git::https://github.com/Callumccr/tf-mod-aws-subnets.git?ref=master"
     availability_zones   = var.availability_zones
     namespace            = var.namespace
     stage                = var.stage
@@ -145,7 +145,7 @@ The following example generates consistent names and tags for resources, a netwo
   }
 
   module "tf-mod-aws-eks-cluster" {
-    source                = "git::https://github.com/Callumccr/tf-mod-aws-eks-cluster.git?ref=master
+    source                = "git::https://github.com/Callumccr/tf-mod-aws-eks-cluster.git?ref=master"
     namespace             = var.namespace
     stage                 = var.stage
     name                  = var.name
@@ -163,7 +163,7 @@ The following example generates consistent names and tags for resources, a netwo
   }
 
   module "tf-mod-aws-eks-workers" {
-    source                = "git::https://github.com/Callumccr/tf-mod-aws-eks-workers.git?ref=master
+    source                    = "git::https://github.com/Callumccr/tf-mod-aws-eks-workers.git?ref=master"
     namespace                 = var.namespace
     stage                     = var.stage
     name                      = var.name
