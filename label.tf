@@ -1,5 +1,5 @@
 module "label" {
-  source             = "git::ssh://git@git.testplant.com/devops/tf-mod-label.git?ref=master"
+  source             = "git::https://github.com/Callumccr/tf-mod-label.git?ref=master"
   context            = var.context
   attributes         = ["eks", "workers"]
   delimiter          = "-"
@@ -8,7 +8,7 @@ module "label" {
 }
 
 module "security_group_label" {
-  source             = "git::ssh://git@git.testplant.com/devops/tf-mod-label.git?ref=master"
+  source             = "git::https://github.com/Callumccr/tf-mod-label.git?ref=master"
   context            = module.label.context
   attributes         = ["sg"]
   additional_tag_map = {} /* Additional attributes (e.g. 1) */
@@ -16,7 +16,7 @@ module "security_group_label" {
 }
 
 module "policy_label" {
-  source             = "git::ssh://git@git.testplant.com/devops/tf-mod-label.git?ref=master"
+  source             = "git::https://github.com/Callumccr/tf-mod-label.git?ref=master"
   context            = module.label.context
   attributes         = ["policy"]
   additional_tag_map = {} /* Additional attributes (e.g. 1) */
@@ -24,7 +24,7 @@ module "policy_label" {
 }
 
 module "role_label" {
-  source             = "git::ssh://git@git.testplant.com/devops/tf-mod-label.git?ref=master"
+  source             = "git::https://github.com/Callumccr/tf-mod-label.git?ref=master"
   context            = module.label.context
   attributes         = ["role"]
   additional_tag_map = {} /* Additional attributes (e.g. 1) */
@@ -32,7 +32,7 @@ module "role_label" {
 }
 
 module "nodegroup_label" {
-  source             = "git::ssh://git@git.testplant.com/devops/tf-mod-label.git?ref=master"
+  source             = "git::https://github.com/Callumccr/tf-mod-label.git?ref=master"
   context            = module.label.context
   attributes         = ["nodegroup"]
   additional_tag_map = {} /* Additional attributes (e.g. 1) */
