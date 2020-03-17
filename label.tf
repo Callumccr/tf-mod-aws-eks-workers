@@ -1,10 +1,10 @@
 module "label" {
   source             = "git::https://github.com/Callumccr/tf-mod-label.git?ref=master"
   context            = var.context
-  attributes         = ["eks", "workers"]
+  attributes         = ["node", "group"]
   delimiter          = "-"
   additional_tag_map = {} /* Additional attributes (e.g. 1) */
-  label_order        = ["namespace", "environment", "name", "attributes"]
+  label_order        = ["environment", "namespace", "name", "attributes"]
 }
 
 module "security_group_label" {
@@ -12,7 +12,7 @@ module "security_group_label" {
   context            = module.label.context
   attributes         = ["sg"]
   additional_tag_map = {} /* Additional attributes (e.g. 1) */
-  label_order        = ["namespace", "environment", "name", "attributes"]
+  label_order        = ["environment", "namespace", "name", "attributes"]
 }
 
 module "policy_label" {
@@ -20,7 +20,7 @@ module "policy_label" {
   context            = module.label.context
   attributes         = ["policy"]
   additional_tag_map = {} /* Additional attributes (e.g. 1) */
-  label_order        = ["namespace", "environment", "name", "attributes"]
+  label_order        = ["environment", "namespace", "name", "attributes"]
 }
 
 module "role_label" {
@@ -28,14 +28,5 @@ module "role_label" {
   context            = module.label.context
   attributes         = ["role"]
   additional_tag_map = {} /* Additional attributes (e.g. 1) */
-  label_order        = ["namespace", "environment", "name", "attributes"]
+  label_order        = ["environment", "namespace", "name", "attributes"]
 }
-
-module "nodegroup_label" {
-  source             = "git::https://github.com/Callumccr/tf-mod-label.git?ref=master"
-  context            = module.label.context
-  attributes         = ["nodegroup"]
-  additional_tag_map = {} /* Additional attributes (e.g. 1) */
-  label_order        = ["namespace", "environment", "name", "attributes"]
-}
-

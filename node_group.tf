@@ -1,6 +1,6 @@
 resource "aws_eks_node_group" "workers" {
   count           = var.enabled ? 1 : 0
-  node_group_name = module.nodegroup_label.id
+  node_group_name = module.label.id
   cluster_name    = var.cluster_name
   node_role_arn   = join("", aws_iam_role.default.*.arn)
   subnet_ids      = var.subnet_ids
@@ -42,6 +42,6 @@ resource "aws_eks_node_group" "workers" {
     aws_iam_role_policy_attachment.amazon_ec2_container_registry_read_only
   ]
 
-  tags = module.nodegroup_label.tags
+  tags = module.label.tags
 
 }
