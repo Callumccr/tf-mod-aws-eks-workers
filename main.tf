@@ -5,6 +5,49 @@ resource "aws_iam_policy" "amazon_eks_worker_node_autoscaler_policy" {
   policy = join("", data.aws_iam_policy_document.amazon_eks_worker_node_autoscaler_policy.*.json)
 }
 
+//PolicyALBIngress
+resource "aws_iam_policy" "amazon_eks_worker_node_alb_ingress_policy" {
+  count  = (var.enabled) ? 1 : 0
+  name   = "${module.label.id}-alb-ingress"
+  path   = "/"
+  policy = join("", data.aws_iam_policy_document.amazon_eks_worker_node_alb_ingress_policy.*.json)
+}
+
+resource "aws_iam_role_policy_attachment" "amazon_eks_worker_node_alb_ingress_policy" {
+  count      = (var.enabled) ? 1 : 0
+  policy_arn = join("", aws_iam_policy.amazon_eks_worker_node_alb_ingress_policy.*.arn)
+  role       = join("", aws_iam_role.default.*.name)
+}
+
+//PolicyAppMesh
+resource "aws_iam_policy" "amazon_eks_worker_node_app_mesh_policy" {
+  count  = (var.enabled) ? 1 : 0
+  name   = "${module.label.id}-app-mesh"
+  path   = "/"
+  policy = join("", data.aws_iam_policy_document.amazon_eks_worker_node_app_mesh_policy.*.json)
+}
+
+resource "aws_iam_role_policy_attachment" "amazon_eks_worker_node_app_mesh_policy" {
+  count      = (var.enabled) ? 1 : 0
+  policy_arn = join("", aws_iam_policy.amazon_eks_worker_node_app_mesh_policy.*.arn)
+  role       = join("", aws_iam_role.default.*.name)
+}
+
+//PolicyEBS
+resource "aws_iam_policy" "amazon_eks_worker_node_ebs_policy" {
+  count  = (var.enabled && var.enable_cluster_autoscaler) ? 1 : 0
+  name   = "${module.label.id}-app-mesh"
+  path   = "/"
+  policy = join("", data.aws_iam_policy_document.amazon_eks_worker_node_ebs_policy.*.json)
+}
+
+resource "aws_iam_role_policy_attachment" "amazon_eks_worker_node_ebs_policy" {
+  count      = (var.enabled) ? 1 : 0
+  policy_arn = join("", aws_iam_policy.amazon_eks_worker_node_ebs_policy.*.arn)
+  role       = join("", aws_iam_role.default.*.name)
+}
+
+
 resource "aws_iam_role" "default" {
   count              = var.enabled ? 1 : 0
   name               = module.role_label.id
